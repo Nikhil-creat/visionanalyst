@@ -1,0 +1,15 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: backend } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -r requirements.txt flake8
+      - run: flake8 . --select=E9,F63,F7,F82
+      - run: pytest -q
+      - run: bandit -r . -ll -x ./tests
+      - run: docker build -t visionanalyst .

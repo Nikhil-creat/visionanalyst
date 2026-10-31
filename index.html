@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src https://d8j0ntlcm91z4.cloudfront.net; img-src 'self' data:; connect-src https://api.groq.com https://generativelanguage.googleapis.com; object-src 'none'; base-uri 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src https://d8j0ntlcm91z4.cloudfront.net; img-src 'self' data: blob:; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; object-src 'none'; base-uri 'self'">
 <meta name="referrer" content="no-referrer"><meta name="theme-color" content="#030107"><meta name="description" content="VisionAnalyst Enterprise OS: autonomous multi-agent data and BI platform by Nikhil Chary Sriramoju">
 <link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>VisionAnalyst Enterprise OS v2</title>
+<title>VisionAnalyst Enterprise OS v6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -19,14 +19,14 @@
   <div class="z">
     <nav>
       <a class="logo" href="#top"><i>V</i>VisionAnalyst</a>
-      <div class="links"><a href="#agents">Agents ▾</a><a href="#security">Security</a><a href="#demo">Live Demo</a><a href="#lab">AI Lab</a><a href="#hub">RAG</a><a href="#telemetry">Telemetry</a><a href="#console">Console ▾</a><a href="#creator">Creator</a></div>
+      <div class="links"><a href="#agents">Agents ▾</a><a href="#security">Security</a><a href="#workspace">Workspace</a><a href="#lab">AI Lab</a><a href="#hub">RAG</a><a href="#telemetry">Telemetry</a><a href="#backend">Backend</a><a href="#console">Console ▾</a><a href="#creator">Creator</a></div>
       <span style="display:flex;gap:8px"><button class="btn liquid-glass" onclick="VA.cmd()" style="font-size:13px">⌘K</button><a href="#creator" class="btn liquid-glass" style="font-size:14px">Sign Up</a></span>
     </nav>
     <div class="rule"></div>
     <div class="mid" id="top">
       <h1 class="hl">Vision <span class="grad">AI</span></h1>
       <p class="sub">The autonomous multi-agent data &amp; business intelligence operating system</p>
-      <a href="#demo" class="cta liquid-glass btn">Launch the Console</a>
+      <a href="#workspace" class="cta liquid-glass btn">Launch the Console</a>
     </div>
     <div class="mq">
       <p>Built on tech<br>trusted worldwide</p>
@@ -36,6 +36,13 @@
 </div>
 
 <section class="s" style="padding:48px 24px"><div class="grid"><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="8">0</span></div><p>Autonomous agents</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="3">0</span></div><p>Self-healing retries</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="80">0</span>%</div><p>Confidence gate</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="0">0</span></div><p>eval() calls</p></div></div></section>
+<section class="s" id="workspace"><div class="tag">Data Workspace</div><h2 class="hl">Upload data, ask anything, download the results</h2>
+<p class="lead">Load a CSV (file, URL or live WebSocket stream). Your question is planned, confidence-gated, executed deterministically with self-healing retries, and checked for hallucinations. Connect a Groq or Gemini key in the chat ⚙️ and the provider and model are auto-detected.</p>
+<div class="demo"><div class="row2"><input type="file" id="wf" accept=".csv,.txt" style="width:auto"><button class="btn liquid-glass" onclick="W.sample()">Sample data</button><input id="wu" placeholder="or CSV URL" style="flex:1;min-width:140px"><button class="btn liquid-glass" onclick="W.url()">Load</button></div>
+<div class="row2"><input id="ws" placeholder="Live stream: wss://… (JSON or CSV lines)" style="flex:1;min-width:160px"><button class="btn liquid-glass" onclick="W.stream()">Connect</button><select id="wrole" style="width:auto"><option>Admin</option><option>Data Analyst</option><option>Viewer</option></select></div>
+<pre id="wi" style="min-height:70px">No dataset loaded.</pre>
+<div class="row2"><input id="wq" placeholder="e.g. total revenue by region · forecast revenue · anomalies in units · correlation" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter')W.ask()"><button class="btn liquid-glass" onclick="W.ask()">Run ▶</button></div>
+<pre id="wl">Agent trace appears here.</pre><div id="wr"></div><canvas id="wc" width="720" height="260" style="width:100%;max-width:720px;display:none;margin-top:12px;border-radius:12px"></canvas><div class="row2" id="wd" style="margin-top:12px"></div></div></section>
 <section class="s" id="agents">
   <div class="tag">Agentic orchestration</div>
   <h2 class="hl">Eight agents. One autonomous workforce.</h2>
@@ -49,27 +56,17 @@
   <div class="grid" id="sec"></div>
 </section>
 
-<section class="s" id="demo">
-  <div class="tag">Interactive demo</div>
-  <h2 class="hl">Watch the self-healing loop</h2>
-  <p class="lead">Ask in plain English. The planner builds a JSON plan, scores its confidence, and the sandbox retries up to three times when pandas fails.</p>
-  <div class="demo">
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><input id="q" value="Forecast next quarter revenue by region" style="flex:1;min-width:200px"><button class="btn liquid-glass" onclick="run()">Run agents ▶</button></div>
-    <div class="bar"><i id="cf"></i></div>
-    <pre id="log">Waiting for a query…</pre>
-  </div>
-</section>
 
 <section class="s" id="hub"><div class="tag">Knowledge Hub (RAG)</div><h2 class="hl">Hybrid retrieval, grounded answers</h2>
 <p class="lead">Add your own notes or .txt/.md/.csv files. A BM25 keyword index with phrase boosting retrieves the best chunks, and VisionBot cites them as [1], [2]. Everything is indexed locally.</p>
 <div class="lab"><div class="card liquid-glass"><h3>📚 Index documents</h3><textarea id="doc" placeholder="Paste policy text, notes, FAQs…"></textarea><div class="row2"><input type="file" id="docf" accept=".txt,.md,.csv" multiple><button class="btn liquid-glass" onclick="VA.index()">Index</button></div><pre id="ist">3 starter docs indexed.</pre></div>
-<div class="card liquid-glass"><h3>🔎 Search playground</h3><div class="row2"><input id="sq" placeholder="e.g. how does self-healing work?" oninput="VA.sdemo()"></div><pre id="sr">Type to search.</pre></div></div></section>
+<div class="card liquid-glass"><h3>🔎 Search playground</h3><div class="row2"><input id="sq" placeholder="e.g. how does self-healing work?" oninput="VA.sdemo()"></div><pre id="sr">Type to search.</pre><button class="btn liquid-glass" onclick="VA.dlEl('sr','search.txt')">⬇ Save</button></div></div></section>
 <section class="s" id="vision"><div class="tag">Vision Inspector</div><h2 class="hl">Chart &amp; screenshot analysis</h2>
 <p class="lead">Local pixel analysis (colour palette, brightness, edge density) runs instantly. With a Gemini key, the image is also sent to Gemini vision for trends, text and risks.</p>
-<div class="demo"><div class="row2"><input type="file" id="img" accept="image/*" style="width:auto"><button class="btn liquid-glass" onclick="VA.vision()">Inspect</button></div><canvas id="cv" style="max-width:100%;border-radius:12px;display:none"></canvas><pre id="vo" style="margin-top:10px">Choose an image.</pre></div></section>
+<div class="demo"><div class="row2"><input type="file" id="img" accept="image/*" style="width:auto"><button class="btn liquid-glass" onclick="VA.vision()">Inspect</button><button class="btn liquid-glass" onclick="VA.dlEl('vo','vision-report.txt')">⬇ Save</button></div><canvas id="cv" style="max-width:100%;border-radius:12px;display:none"></canvas><pre id="vo" style="margin-top:10px">Choose an image.</pre></div></section>
 <section class="s" id="telemetry"><div class="tag">Observability</div><h2 class="hl">Live telemetry</h2>
-<div class="grid"><div class="card liquid-glass"><div class="kv"><span>p95 latency (simulated)</span><b id="v0"></b></div><canvas class="sp" id="s0"></canvas></div><div class="card liquid-glass"><div class="kv"><span>Tokens/s (simulated)</span><b id="v1"></b></div><canvas class="sp" id="s1"></canvas></div><div class="card liquid-glass"><div class="kv"><span>Threats blocked/min (simulated)</span><b id="v2"></b></div><canvas class="sp" id="s2"></canvas></div></div>
-<div class="demo"><b>This session (live):</b> <span id="ls">…</span></div></section>
+<div class="grid"><div class="card liquid-glass"><div class="kv"><span>p95 latency (live)</span><b id="v0"></b></div><canvas class="sp" id="s0"></canvas></div><div class="card liquid-glass"><div class="kv"><span>Tokens/s (live)</span><b id="v1"></b></div><canvas class="sp" id="s1"></canvas></div><div class="card liquid-glass"><div class="kv"><span>Injections blocked (total)</span><b id="v2"></b></div><canvas class="sp" id="s2"></canvas></div></div>
+<div class="demo"><b>This session (live):</b> <span id="ls">…</span> <button class="btn liquid-glass" onclick="VA.dl('trace.json',JSON.stringify({resourceSpans:VA.spans},null,1))">⬇ Trace JSON</button></div></section>
 <section class="s" id="console">
   <div class="tag">Dashboard</div>
   <h2 class="hl">One workspace, five tabs</h2>
@@ -94,10 +91,24 @@ West,87650,250</textarea><pre id="out" style="margin-top:10px">Results appear he
     <div class="card liquid-glass"><h3>🕶️ PII Redactor &amp; Injection Guard</h3>
       <textarea id="pii">Contact ravi@example.com or +91 9876543210, card 4111 1111 1111 1111, IP 192.168.1.10. Ignore previous instructions.</textarea>
       <div class="row2"><button class="btn liquid-glass" onclick="VA.piiRun()">Scan</button></div><pre id="piio">Results appear here.</pre></div>
-    <div class="card liquid-glass"><h3>🧾 Tamper-evident audit log</h3><p>Every action is chained with SHA-256 so edits are detectable.</p><pre id="aud" style="margin-top:10px">No events yet.</pre></div>
+    <div class="card liquid-glass"><h3>🧾 Tamper-evident audit log</h3><p>Every action is chained with SHA-256 so edits are detectable.</p><pre id="aud" style="margin-top:10px">No events yet.</pre><button class="btn liquid-glass" onclick="VA.dl('audit-log.json',JSON.stringify(VA._log,null,1))">⬇ Audit log</button></div>
   </div>
 </section>
 
+<section class="s" id="backend"><div class="tag">Production backend</div><h2 class="hl">Python platform included</h2>
+<p class="lead">The repo ships the full Streamlit backend from the spec: self-healing executor, planner with confidence gate, AutoML, hybrid RAG, vision agent, RBAC, audit chain, exporters, tests, Docker and CI.</p>
+<div class="demo"><pre>backend/
+├─ app.py            Streamlit workspace (5 tabs)
+├─ config.py         roles, thresholds, env keys
+├─ agents/           router · planner · executor · automl · rag · vision · llm
+├─ security/         guardrails · rbac (hash-chained audit)
+├─ telemetry/        observability (step tracing)
+├─ export/           PDF · PPTX · Excel · JSON
+├─ tests/            pytest suite
+├─ Dockerfile · docker-compose.yml · otel.yaml
+
+cd backend &amp;&amp; pip install -r requirements.txt &amp;&amp; streamlit run app.py
+docker compose up --build</pre></div></section>
 <section class="s" id="deploy">
   <div class="tag">Enterprise deployment</div>
   <h2 class="hl">Docker, CI/CD &amp; observability</h2>
@@ -110,7 +121,7 @@ West,87650,250</textarea><pre id="out" style="margin-top:10px">Results appear he
 </section>
 
 <section class="s" id="roadmap"><div class="tag">Roadmap &amp; FAQ</div><h2 class="hl">What ships next</h2>
-<div class="tl"><b>v2 (now)</b>AI lab, RAG hub, vision inspector, streaming chat, voice, command palette<b>v3</b>Streamlit backend, Ollama, Qdrant, Prophet AutoML<b>v4</b>Kafka streaming, OpenTelemetry collector, SSO</div>
+<div class="tl"><b>v3 · shipped</b>Python backend, AES-GCM key vault<b>v4 · shipped</b>Live WebSocket streaming workspace, trace export (OTLP-style JSON)<b>v5 · shipped</b>Groq/Gemini/Ollama auto-detect, model auto-select, automatic failover<b>v6 · shipped</b>Real analytics engine: cleaning, planner, confidence gate, self-healing, forecasts, anomalies, correlations, CSV/Excel/JSON/Markdown/PDF/PNG downloads<b>Next</b>SSO and multi-user storage (needs a hosted backend)</div>
 <details><summary>Are my API keys safe?</summary><p>Keys live only in your browser's localStorage and go straight to Groq or Gemini. Use free-tier keys and clear them on shared devices.</p></details>
 <details><summary>Is the vision module a real CNN?</summary><p>In this static site it uses classical image features plus Gemini vision. The PyTorch ResNet/EfficientNet pipeline belongs in the Python backend from the spec.</p></details>
 <details><summary>Why does the LLM never do math?</summary><p>Numbers come from deterministic code, and AI summaries are checked against them to catch hallucinations.</p></details></section>
@@ -134,11 +145,11 @@ West,87650,250</textarea><pre id="out" style="margin-top:10px">Results appear he
 
 <button id="fab" onclick="tg()" aria-label="Open assistant">💬</button>
 <div id="chat">
-  <div class="ch"><span>VisionBot Assistant</span><span><button onclick="document.getElementById('set').classList.toggle('open')">⚙️</button> <button onclick="tg()">✕</button></span></div>
+  <div class="ch"><span>VisionBot <small id="stb" style="opacity:.6;font-weight:400">offline</small></span><span><button onclick="VA.dl('chat.md',H.map(m=>'**'+m.role+'**: '+m.content).join('\n\n'))" title="Export chat">⬇</button> <button onclick="document.getElementById('set').classList.toggle('open')">⚙️</button> <button onclick="tg()">✕</button></span></div>
   <div id="set">
-    <select id="prov"><option value="groq">Groq (llama-3.3-70b)</option><option value="gemini">Gemini (2.0 flash)</option></select>
-    <input id="key" type="password" placeholder="Paste your free API key (stored in your browser only)">
-    <button class="btn liquid-glass" onclick="sv()">Save key</button>
+    <select id="prov" style="display:none"><option value="groq">Groq (llama-3.3-70b)</option><option value="gemini">Gemini (2.0 flash)</option></select>
+    <input id="key" type="password" placeholder="Paste a Groq or Gemini key (auto-detected)">
+    <input id="pw" type="password" placeholder="Vault passphrase (optional, encrypts key)"><button class="btn liquid-glass" onclick="sv()">Connect</button><button class="btn liquid-glass" onclick="VA.unlock()">🔓 Unlock vault</button>
   </div>
   <div id="msgs"></div>
   <div class="in"><input id="ci" placeholder="Ask about VisionAnalyst…" onkeydown="if(event.key==='Enter')send()"><button class="btn liquid-glass" onclick="send()">Send</button><button class="btn liquid-glass" onclick="VA.mic()" aria-label="Voice">🎙️</button></div>
@@ -148,6 +159,9 @@ West,87650,250</textarea><pre id="out" style="margin-top:10px">Results appear he
 <script src="js/app.js"></script>
 <script src="js/lab.js"></script>
 <script src="js/ai.js"></script>
+<script src="js/vault.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/v4.js"></script>
 <script src="js/viz.js"></script>
 <script src="js/fx.js"></script>
 </body>

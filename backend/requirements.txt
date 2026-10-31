@@ -1,0 +1,16 @@
+streamlit
+pandas
+polars
+numpy
+scikit-learn
+plotly
+pydantic>=2
+requests
+openpyxl
+reportlab
+python-pptx
+pillow
+pypdf
+pytest
+bandit
+# optional: torch torchvision prophet chromadb
