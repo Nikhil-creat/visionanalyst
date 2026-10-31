@@ -31,8 +31,8 @@ const W=window.W={ds:null,last:'',dirty:0};
 const SAMPLE='region,product,revenue,units,month\nNorth,Alpha,120500,340,1\nSouth,Alpha,98200,290,1\nEast,Beta,143900,410,1\nWest,Beta,87650,250,1\nNorth,Alpha,131000,360,2\nSouth,Beta,,300,2\nEast,Beta,152400,430,2\nWest,Alpha,90100,262,2\nNorth,Beta,139800,371,3\nSouth,Alpha,104300,310,3\nEast,Alpha,298000,455,3\nWest,Beta,93400,270,3\nWest,Beta,93400,270,3';
 W.set=ds=>{W.ds=ds;const role=$('wrole').value;$('wi').innerHTML=`<b>${ds.rep.rows} rows</b> · ${ds.cols.map(c=>esc(c)+' ('+ds.types[c]+')').join(', ')}\nCleaned: ${ds.rep.imputed} values imputed, ${ds.rep.dupes} duplicate rows removed`+(role==='Viewer'?'\n⛔ Raw rows hidden for Viewer role':'\n'+ds.rows.slice(0,4).map(r=>esc(ds.cols.map(c=>r[c]).join(' | '))).join('\n'));VA.audit('dataset loaded '+ds.rep.rows+' rows')};
 W.sample=()=>W.set(E.load(SAMPLE));
-$('wf').onchange=async e=>{const f=e.target.files[0];if(f)try{W.set(E.load(await f.text()))}catch(x){$('wi').textContent='Could not parse that file.'}};
-W.url=async()=>{try{W.set(E.load(await(await fetch($('wu').value.trim())).text()))}catch(e){$('wi').textContent='Could not load that URL (the server must allow CORS).'}};
+$('wf').onchange=async e=>{const f=e.target.files[0];if(f)try{W.set(E.load(await f.text()))}catch(x){$('wi').textContent='Could not load that file: '+x.message}};
+W.url=async()=>{try{W.set(E.load(await(await fetch($('wu').value.trim())).text()))}catch(e){$('wi').textContent='Could not load that URL: '+e.message+' (the server must allow CORS).'}};
 W.stream=()=>{const u=$('ws').value.trim();if(!/^wss?:\/\//.test(u))return;const s=new WebSocket(u);s.onopen=()=>{$('wi').textContent='🔴 Live stream connected: '+u;VA.audit('stream connected')};s.onclose=()=>$('wi').textContent+='\nStream closed.';
 s.onmessage=m=>{let o;try{const j=JSON.parse(m.data);o=Array.isArray(j)?j:[j]}catch(e){if(!W.ds)return;const v=m.data.split(',');o=[Object.fromEntries(W.ds.cols.map((c,i)=>[c,W.ds.types[c]==='num'?+v[i]:(v[i]||'').trim()]))]}
 if(!W.ds){const c=Object.keys(o[0]);W.ds={cols:c,types:Object.fromEntries(c.map(k=>[k,typeof o[0][k]==='number'?'num':'cat'])),rows:[],rep:{rows:0,imputed:0,dupes:0}}}W.ds.rows.push(...o);W.ds.rows=W.ds.rows.slice(-5000);W.ds.rep.rows=W.ds.rows.length;W.dirty=1;$('wi').textContent='🔴 LIVE · '+W.ds.rep.rows+' rows streamed'}};
@@ -57,3 +57,4 @@ B('PDF',()=>W.pdf(`<body style="font-family:sans-serif;padding:24px"><h1>VisionA
 if($('wc').style.display==='block')B('Chart PNG',()=>$('wc').toBlob(b=>VA.dl('chart.png',b,'image/png')))}catch(e){(e.log||[]).forEach(l=>log('[executor] '+l));log('❌ '+e.message);D.innerHTML='';R.innerHTML=''}};
 $('wrole').onchange=()=>W.ds&&W.set(W.ds);
 })();
+VA.forget=()=>{try{Object.keys(localStorage).filter(k=>/^v[ax]_/.test(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}VA.keys={};VA.models={};VA.ollama=false;VA.badge();add('b','🗑 All stored keys removed from this browser.')};

@@ -6,7 +6,7 @@
 <meta name="referrer" content="no-referrer"><meta name="theme-color" content="#030107"><meta name="description" content="VisionAnalyst Enterprise OS: autonomous multi-agent data and BI platform by Nikhil Chary Sriramoju">
 <link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>VisionAnalyst Enterprise OS v6</title>
+<title>VisionAnalyst Enterprise OS v7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -18,8 +18,8 @@
   <div class="blur"></div>
   <div class="z">
     <nav>
-      <a class="logo" href="#top"><i>V</i>VisionAnalyst</a>
-      <div class="links"><a href="#agents">Agents ▾</a><a href="#security">Security</a><a href="#workspace">Workspace</a><a href="#lab">AI Lab</a><a href="#hub">RAG</a><a href="#telemetry">Telemetry</a><a href="#backend">Backend</a><a href="#console">Console ▾</a><a href="#creator">Creator</a></div>
+      <a class="skip" href="#workspace">Skip to workspace</a><a class="logo" href="#top"><i>V</i>VisionAnalyst</a>
+      <button id="navt" aria-label="Menu" onclick="document.querySelector('.links').classList.toggle('m')">☰</button><div class="links"><a href="#agents">Agents ▾</a><a href="#security">Security</a><a href="#workspace">Workspace</a><a href="#lab">AI Lab</a><a href="#hub">RAG</a><a href="#telemetry">Telemetry</a><a href="#backend">Backend</a><a href="#console">Console ▾</a><a href="#creator">Creator</a></div>
       <span style="display:flex;gap:8px"><button class="btn liquid-glass" onclick="VA.cmd()" style="font-size:13px">⌘K</button><a href="#creator" class="btn liquid-glass" style="font-size:14px">Sign Up</a></span>
     </nav>
     <div class="rule"></div>
@@ -38,7 +38,7 @@
 <section class="s" style="padding:48px 24px"><div class="grid"><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="8">0</span></div><p>Autonomous agents</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="3">0</span></div><p>Self-healing retries</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="80">0</span>%</div><p>Confidence gate</p></div><div class="card liquid-glass" style="text-align:center"><div class="hl" style="font-size:48px"><span data-count="0">0</span></div><p>eval() calls</p></div></div></section>
 <section class="s" id="workspace"><div class="tag">Data Workspace</div><h2 class="hl">Upload data, ask anything, download the results</h2>
 <p class="lead">Load a CSV (file, URL or live WebSocket stream). Your question is planned, confidence-gated, executed deterministically with self-healing retries, and checked for hallucinations. Connect a Groq or Gemini key in the chat ⚙️ and the provider and model are auto-detected.</p>
-<div class="demo"><div class="row2"><input type="file" id="wf" accept=".csv,.txt" style="width:auto"><button class="btn liquid-glass" onclick="W.sample()">Sample data</button><input id="wu" placeholder="or CSV URL" style="flex:1;min-width:140px"><button class="btn liquid-glass" onclick="W.url()">Load</button></div>
+<div class="demo"><div class="row2"><input type="file" id="wf" accept=".csv,.tsv,.txt,text/csv,text/plain" style="width:auto"><button class="btn liquid-glass" onclick="W.sample()">Sample data</button><input id="wu" placeholder="or CSV URL" style="flex:1;min-width:140px"><button class="btn liquid-glass" onclick="W.url()">Load</button></div>
 <div class="row2"><input id="ws" placeholder="Live stream: wss://… (JSON or CSV lines)" style="flex:1;min-width:160px"><button class="btn liquid-glass" onclick="W.stream()">Connect</button><select id="wrole" style="width:auto"><option>Admin</option><option>Data Analyst</option><option>Viewer</option></select></div>
 <pre id="wi" style="min-height:70px">No dataset loaded.</pre>
 <div class="row2"><input id="wq" placeholder="e.g. total revenue by region · forecast revenue · anomalies in units · correlation" style="flex:1;min-width:200px" onkeydown="if(event.key==='Enter')W.ask()"><button class="btn liquid-glass" onclick="W.ask()">Run ▶</button></div>
@@ -149,7 +149,7 @@ docker compose up --build</pre></div></section>
   <div id="set">
     <select id="prov" style="display:none"><option value="groq">Groq (llama-3.3-70b)</option><option value="gemini">Gemini (2.0 flash)</option></select>
     <input id="key" type="password" placeholder="Paste a Groq or Gemini key (auto-detected)">
-    <input id="pw" type="password" placeholder="Vault passphrase (optional, encrypts key)"><button class="btn liquid-glass" onclick="sv()">Connect</button><button class="btn liquid-glass" onclick="VA.unlock()">🔓 Unlock vault</button>
+    <input id="pw" type="password" placeholder="Vault passphrase (optional, encrypts key)"><button class="btn liquid-glass" onclick="sv()">Connect</button><button class="btn liquid-glass" onclick="VA.unlock()">🔓 Unlock vault</button><button class="btn liquid-glass" onclick="VA.forget()">🗑 Forget keys</button>
   </div>
   <div id="msgs"></div>
   <div class="in"><input id="ci" placeholder="Ask about VisionAnalyst…" onkeydown="if(event.key==='Enter')send()"><button class="btn liquid-glass" onclick="send()">Send</button><button class="btn liquid-glass" onclick="VA.mic()" aria-label="Voice">🎙️</button></div>
