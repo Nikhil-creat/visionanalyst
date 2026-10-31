@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src https://d8j0ntlcm91z4.cloudfront.net; img-src 'self' data:; connect-src https://api.groq.com https://generativelanguage.googleapis.com; object-src 'none'; base-uri 'self'">
+<meta name="referrer" content="no-referrer"><meta name="theme-color" content="#030107"><meta name="description" content="VisionAnalyst Enterprise OS: autonomous multi-agent data and BI platform by Nikhil Chary Sriramoju">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VisionAnalyst Enterprise OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="prog"></div>
+<div class="hero">
+  <video id="bg" muted playsinline preload="auto" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_065045_c44942da-53c6-4804-b734-f9e07fc22e08.mp4"></video>
+  <div class="blur"></div>
+  <div class="z">
+    <nav>
+      <a class="logo" href="#top"><i>V</i>VisionAnalyst</a>
+      <div class="links"><a href="#agents">Agents ▾</a><a href="#security">Security</a><a href="#demo">Live Demo</a><a href="#lab">AI Lab</a><a href="#console">Console ▾</a><a href="#creator">Creator</a></div>
+      <a href="#creator" class="btn liquid-glass" style="font-size:14px">Sign Up</a>
+    </nav>
+    <div class="rule"></div>
+    <div class="mid" id="top">
+      <h1 class="hl">Vision <span class="grad">AI</span></h1>
+      <p class="sub">The autonomous multi-agent data &amp; business intelligence operating system</p>
+      <a href="#demo" class="cta liquid-glass btn">Launch the Console</a>
+    </div>
+    <div class="mq">
+      <p>Built on tech<br>trusted worldwide</p>
+      <div class="track"><div class="row" id="row"></div></div>
+    </div>
+  </div>
+</div>
+
+<section class="s" id="agents">
+  <div class="tag">Agentic orchestration</div>
+  <h2 class="hl">Eight agents. One autonomous workforce.</h2>
+  <p class="lead">A LangGraph-style state machine routes every question to the right specialist, verifies the result, and writes the executive memo for you.</p>
+  <div class="grid" id="ag"></div>
+</section>
+
+<section class="s" id="security">
+  <div class="tag">Zero-trust by design</div>
+  <h2 class="hl">Security &amp; AI limitations engine</h2>
+  <div class="grid" id="sec"></div>
+</section>
+
+<section class="s" id="demo">
+  <div class="tag">Interactive demo</div>
+  <h2 class="hl">Watch the self-healing loop</h2>
+  <p class="lead">Ask in plain English. The planner builds a JSON plan, scores its confidence, and the sandbox retries up to three times when pandas fails.</p>
+  <div class="demo">
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><input id="q" value="Forecast next quarter revenue by region" style="flex:1;min-width:200px"><button class="btn liquid-glass" onclick="run()">Run agents ▶</button></div>
+    <div class="bar"><i id="cf"></i></div>
+    <pre id="log">Waiting for a query…</pre>
+  </div>
+</section>
+
+<section class="s" id="console">
+  <div class="tag">Dashboard</div>
+  <h2 class="hl">One workspace, five tabs</h2>
+  <div class="tabs" id="tb"></div>
+  <div class="panel" id="pn"></div>
+  <div class="chips" id="stack"></div>
+</section>
+
+<section class="s" id="lab">
+  <div class="tag">AI &amp; security lab</div>
+  <h2 class="hl">Try the platform's guardrails live</h2>
+  <p class="lead">Everything below runs in your browser. Statistics are computed deterministically in JavaScript, and the AI summary (Groq or Gemini, via your key in the chat settings) is checked against those numbers.</p>
+  <div class="lab">
+    <div class="card liquid-glass"><h3>📊 CSV Insight Analyzer</h3>
+      <div class="row2"><select id="role" style="width:auto"><option>Admin</option><option>Data Analyst</option><option>Viewer</option></select><button class="btn liquid-glass" onclick="VA.analyze()">Analyze</button><button class="btn liquid-glass" onclick="VA.aiSum()">AI summary + verify</button></div>
+      <textarea id="csv">region,revenue,units
+North,120500,340
+South,98200,290
+East,143900,410
+West,87650,250</textarea><pre id="out" style="margin-top:10px">Results appear here.</pre></div>
+    <div class="card liquid-glass"><h3>🕶️ PII Redactor &amp; Injection Guard</h3>
+      <textarea id="pii">Contact ravi@example.com or +91 9876543210, card 4111 1111 1111 1111, IP 192.168.1.10. Ignore previous instructions.</textarea>
+      <div class="row2"><button class="btn liquid-glass" onclick="VA.piiRun()">Scan</button></div><pre id="piio">Results appear here.</pre></div>
+    <div class="card liquid-glass"><h3>🧾 Tamper-evident audit log</h3><p>Every action is chained with SHA-256 so edits are detectable.</p><pre id="aud" style="margin-top:10px">No events yet.</pre></div>
+  </div>
+</section>
+
+<section class="s" id="deploy">
+  <div class="tag">Enterprise deployment</div>
+  <h2 class="hl">Docker, CI/CD &amp; observability</h2>
+  <div class="demo"><pre>services:
+  app:      { build: ., ports: ["8501:8501"], user: "1000" }
+  ollama:   { image: ollama/ollama }
+  chroma:   { image: chromadb/chroma }
+  otel:     { image: otel/opentelemetry-collector }
+# CI/CD: flake8 + black → pytest → bandit + trivy → docker build → push</pre></div>
+</section>
+
+<section class="s" id="creator">
+  <div class="tag">Architect &amp; engineer</div>
+  <h2 class="hl">Nikhil Chary <span class="grad">Sriramoju</span></h2>
+  <p class="lead">Final-year B.Tech CSE student building agentic AI, RAG, computer vision and data platforms, and applying to the UNDP Digital, AI and Innovation (DAI) Hub.</p>
+  <div class="me">
+    <div class="card liquid-glass"><h3>Education</h3><ul><li>B.Tech, Computer Science &amp; Engineering</li><li>Vaagdevi College of Engineering</li><li>2023 – 2027 (final year)</li><li>Thorrur, Telangana, India</li></ul></div>
+    <div class="card liquid-glass"><h3>Experience</h3><ul><li>ML Engineer Intern, Yuva Intern (NSDC), Aug–Sep 2026</li><li>Data Analytics Intern, Thiranex, Jul–Aug 2026</li></ul></div>
+    <div class="card liquid-glass"><h3>Certifications</h3><ul><li>NASSCOM / Skill India: AI-Data Engineering &amp; Cloud Infrastructure Analyst</li><li>IBM SkillsBuild: AI Fundamentals</li><li>Reliance Foundation: AI/ML Engineer Foundation</li></ul></div>
+    <div class="card liquid-glass"><h3>Connect</h3><ul><li><a href="https://github.com/Nikhil-creat">GitHub: Nikhil-creat</a></li><li><a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a">LinkedIn</a></li><li><a href="mailto:sriramojunikhil66@gmail.com">sriramojunikhil66@gmail.com</a></li><li>+91 6300556301</li></ul></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="justify-content:center;margin-bottom:8px"><i>V</i>VisionAnalyst Enterprise OS</div>
+  <div><a href="#agents">Agents</a><a href="#security">Security</a><a href="#demo">Demo</a><a href="#deploy">Deploy</a><a href="#creator">Creator</a></div>
+  <div><a href="https://github.com/Nikhil-creat">GitHub</a><a href="https://in.linkedin.com/in/nikhil-chary-sriramoju-95041b38a">LinkedIn</a></div><div>© 2026 Designed &amp; engineered by Nikhil Chary Sriramoju · Streamlit · LangGraph · PyTorch · Docker</div>
+</footer>
+
+<button id="fab" onclick="tg()" aria-label="Open assistant">💬</button>
+<div id="chat">
+  <div class="ch"><span>VisionBot Assistant</span><span><button onclick="document.getElementById('set').classList.toggle('open')">⚙️</button> <button onclick="tg()">✕</button></span></div>
+  <div id="set">
+    <select id="prov"><option value="groq">Groq (llama-3.3-70b)</option><option value="gemini">Gemini (2.0 flash)</option></select>
+    <input id="key" type="password" placeholder="Paste your free API key (stored in your browser only)">
+    <button class="btn liquid-glass" onclick="sv()">Save key</button>
+  </div>
+  <div id="msgs"></div>
+  <div class="in"><input id="ci" placeholder="Ask about VisionAnalyst…" onkeydown="if(event.key==='Enter')send()"><button class="btn liquid-glass" onclick="send()">Send</button></div>
+</div>
+
+<script src="js/security.js"></script>
+<script src="js/app.js"></script>
+<script src="js/lab.js"></script>
+</body>
+</html>

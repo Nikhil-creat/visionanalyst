@@ -1,0 +1,45 @@
+
+// Hero video: JS fade loop
+(function(){const v=document.getElementById('bg'),F=.5;let r;
+function loop(){const t=v.currentTime,d=v.duration||0;let o=1;
+if(t<F)o=t/F;else if(d&&t>d-F)o=Math.max(0,(d-t)/F);v.style.opacity=o;r=requestAnimationFrame(loop)}
+v.addEventListener('play',()=>{cancelAnimationFrame(r);loop()});
+v.addEventListener('ended',()=>{v.style.opacity=0;setTimeout(()=>{v.currentTime=0;v.play().catch(()=>{})},100)});
+v.play().catch(()=>{});})();
+// Marquee
+const L=['Streamlit','LangGraph','PyTorch','Qdrant','Ollama','Docker'];
+document.getElementById('row').innerHTML=[...L,...L].map(n=>`<div class="it"><b class="liquid-glass">${n[0]}</b>${n}</div>`).join('');
+// Agents
+const A=[['🧭','Router Agent','Classifies intent and routes to analytics, RAG, vision, AutoML, streaming or security.'],['🧹','Data Engineering Agent','Detects schema, imputes gaps, normalizes dates and engineers features.'],['📐','Math Planner','Turns questions into strict Pydantic JSON plans. All arithmetic runs in pandas or Polars, never in the LLM.'],['🛡️','Self-Healing Sandbox','Deterministic execution with traceback-driven re-planning and up to 3 retries.'],['📈','AutoML Agent','Prophet forecasts, Random Forest and XGBoost models, feature importance, clustering.'],['👁️','Vision (CNN) Agent','ResNet/EfficientNet and OCR read chart screenshots and verify plots.'],['📚','RAG Knowledge Agent','Hybrid semantic plus keyword search over PDF and DOCX policies, cross-checked with CSV data.'],['📝','Executive Reporting Agent','Synthesizes findings into memos, risk flags and Plotly cards.']];
+document.getElementById('ag').innerHTML=A.map(a=>`<div class="card liquid-glass"><div class="ic">${a[0]}</div><h3>${a[1]}</h3><p>${a[2]}</p></div>`).join('');
+const S=[['🚫','No eval or exec','Plans run through a whitelist of safe operations only.'],['🔍','Injection guardrails','Regex and LLM filters for SQL injection, prompt escape and script payloads.'],['🕶️','PII redaction','Emails, cards, SSNs, IPs and names masked before any LLM call.'],['🔑','RBAC','Admin, Data Analyst and Viewer roles gate exports, raw data and agents.'],['🧾','Tamper-evident audit','Hash-chained log of actions, queries, confidence and tokens.'],['🎯','Confidence gate','Below 80% the system stops and asks a clarifying question.'],['✅','Hallucination check','Summaries verified against min, max and mean bounds from real data.'],['♻️','Graceful degradation','If Ollama or the vector DB drops, a statistical dashboard takes over.']];
+document.getElementById('sec').innerHTML=S.map(a=>`<div class="card liquid-glass"><div class="ic">${a[0]}</div><h3>${a[1]}</h3><p>${a[2]}</p></div>`).join('');
+// Demo
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));let busy=0;
+async function run(){if(busy)return;busy=1;const lg=document.getElementById('log'),cf=document.getElementById('cf');lg.innerHTML='';cf.style.width='0';
+const p=(c,t)=>{lg.innerHTML+=`<span class="${c}">${t}</span>\n`};const q=document.getElementById('q').value.replace(/[<>]/g,'');
+const st=[['','[guardrails] input sanitized · 2 PII tokens masked'],['','[router] intent → AutoML forecast'],['wn','[planner] plan built · confidence 91% (≥ 80%, proceeding)',91],['er','[executor] attempt 1 failed: KeyError \'revenue_usd\''],['wn','[healer] traceback sent to planner → remapped column to "revenue"'],['er','[executor] attempt 2 failed: could not parse dates'],['wn','[healer] normalizing date column, retrying'],['ok','[executor] attempt 3 succeeded · 4 regions · Prophet fit'],['ok','[verify] summary within min/max/mean bounds ✓'],['ok','[report] executive memo ready · PDF · PPTX · XLSX · JSON']];
+p('','› '+q);for(const s of st){await sleep(700);p(s[0],s[1]);if(s[2])cf.style.width=s[2]+'%'}busy=0}
+// Tabs
+const T=[['Agent Workspace','Chat with the agents, watch live step-by-step traces and get interactive Plotly cards with executive summaries.'],['AutoML Studio','Time-series forecasting, feature importance and anomaly radar maps from plain-English requests.'],['Knowledge Hub','Upload PDF or DOCX files, check vector store status and play with hybrid search.'],['Vision Inspector','Analyze chart screenshots with CNN features and OCR to validate visual trends.'],['Telemetry & Audit','Live logs, PII counters, agent latency graphs and token usage via OpenTelemetry.']];
+const tb=document.getElementById('tb');function sel(i){[...tb.children].forEach((b,j)=>b.classList.toggle('on',i===j));document.getElementById('pn').textContent=T[i][1]}
+T.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t[0];b.onclick=()=>sel(i);tb.appendChild(b)});sel(0);
+document.getElementById('stack').innerHTML=['Streamlit','Plotly','Polars','Pandas','scikit-learn','XGBoost','Prophet','LangGraph','ChromaDB','Qdrant','PyTorch','OpenCV','Ollama','Groq','Gemini','OpenTelemetry','Docker','GitHub Actions','Trivy','Bandit'].map(x=>`<span class="liquid-glass">${x}</span>`).join('');
+// Chatbot
+const KB=[[/agent|router|planner/,'Eight agents work together: Router, Data Engineering, Math Planner, Self-Healing Sandbox, AutoML, Vision CNN, RAG and Executive Reporting.'],[/secur|pii|rbac|zero|inject/,'Security: no eval or exec, injection guardrails, PII redaction, RBAC (Admin, Data Analyst, Viewer) and a hash-chained audit log.'],[/heal|retry|error/,'The sandbox captures any pandas traceback, asks the planner for a fixed plan and retries up to 3 times.'],[/docker|deploy|ci/,'Deployment uses a multi-stage python:3.11-slim image, non-root user, docker-compose with Ollama, ChromaDB and OpenTelemetry, plus GitHub Actions with flake8, black, pytest, bandit and trivy.'],[/who|nikhil|creator|built|contact|email/,'VisionAnalyst was architected by Nikhil Chary Sriramoju, final-year B.Tech CSE at Vaagdevi College of Engineering. GitHub: Nikhil-creat · sriramojunikhil66@gmail.com'],[/stack|tech/,'Stack: Streamlit, Plotly, Polars, Pandas, scikit-learn, Prophet, LangGraph, ChromaDB, PyTorch, Ollama, OpenTelemetry and Docker.']];
+const SYS='You are VisionBot, the assistant for VisionAnalyst Enterprise OS, a multi-agent data and BI platform (Streamlit, RAG, CNN vision, AutoML, zero-trust security, self-healing sandbox, Docker, CI/CD) created by Nikhil Chary Sriramoju, final-year B.Tech CSE student (Vaagdevi College of Engineering), interned as ML Engineer (Yuva Intern, NSDC) and Data Analytics (Thiranex). Be concise and helpful.';
+const H=[];const ms=document.getElementById('msgs');
+function add(c,t){const d=document.createElement('div');d.className='m '+c;d.textContent=t;ms.appendChild(d);ms.scrollTop=1e9;return d}
+function tg(){const c=document.getElementById('chat');c.classList.toggle('open');if(c.classList.contains('open')&&!ms.children.length)add('b','Hi! I’m VisionBot. Ask me about the agents, security, deployment or the creator. Tap ⚙️ to add a free Groq or Gemini key for full AI answers.')}
+function gk(p){try{return localStorage.getItem('va_'+p)||''}catch(e){return''}}
+function sv(){const p=document.getElementById('prov').value,k=document.getElementById('key').value.trim();try{localStorage.setItem('va_'+p,k);localStorage.setItem('va_p',p)}catch(e){}add('b','Key saved for '+p+' in this browser.');document.getElementById('set').classList.remove('open')}
+try{const p=localStorage.getItem('va_p');if(p)document.getElementById('prov').value=p}catch(e){}
+async function send(){const i=document.getElementById('ci'),t=i.value.trim();if(!t)return;i.value='';add('u',t);if(VA.inject(t)){add('b','🛡️ Blocked: possible prompt-injection pattern detected.');VA.audit('chat blocked: injection');return}VA.audit('chat query');const b=add('b','…');const p=document.getElementById('prov').value,k=gk(p);H.push({role:'user',content:VA.redact(t).text});
+try{if(!k)throw 0;let a;
+if(p==='groq'){const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'system',content:SYS},...H.slice(-8)]})});a=(await r.json()).choices[0].message.content}
+else{const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+k,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:SYS}]},contents:H.slice(-8).map(m=>({role:m.role==='user'?'user':'model',parts:[{text:m.content}]}))})});a=(await r.json()).candidates[0].content.parts[0].text}
+b.textContent=a;H.push({role:'assistant',content:a})}
+catch(e){const f=KB.find(x=>x[0].test(t.toLowerCase()));b.textContent=(f?f[1]:'I can explain the agents, security, self-healing loop, deployment, tech stack or the creator.')+(k?'':'\n\n(Offline mode. Add a Groq or Gemini key in ⚙️ for full AI answers.)')}}
+
+addEventListener('scroll',()=>{const e=document.documentElement;document.getElementById('prog').style.width=100*e.scrollTop/(e.scrollHeight-e.clientHeight)+'%'});
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
